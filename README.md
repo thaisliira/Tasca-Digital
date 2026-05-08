@@ -24,7 +24,6 @@ Uma rede social interna em formato de tasca portuguesa.
 - [Estrutura do Projeto](#estrutura-do-projeto)
 - [Início Rápido (Docker)](#início-rápido-docker)
 - [Desenvolvimento Local](#desenvolvimento-local)
-- [Variáveis de Ambiente](#variáveis-de-ambiente)
 - [API](#api)
 - [Eventos em Tempo Real (WebSocket)](#eventos-em-tempo-real-websocket)
 - [Notas](#notas)
