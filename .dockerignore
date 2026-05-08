@@ -1,0 +1,24 @@
+# Binários e executáveis (gerados pelo go build)
+main
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Pasta de dependências (o Docker vai baixar via 'go mod download')
+vendor/
+
+# Arquivos de log e temporários
+*.log
+tmp/
+bin/
+
+# Controle de versão e IDEs
+.git
+.gitignore
+.vscode
+.idea
+
+# Ambiente (opcional, se você quiser definir as variáveis no docker-compose)
+.env

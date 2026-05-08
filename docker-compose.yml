@@ -1,0 +1,44 @@
+services:
+  # Banco de Dados
+  db:
+    image: postgres:15-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: notification_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # Backend Go
+  backend:
+    build: ./backend
+    restart: always # Tenta ligar de novo se o banco demorar a subir
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      # Essas chaves devem ser IDENTICAS às do seu db.go
+      - DB_USER=user
+      - DB_PASSWORD=password
+      - DB_NAME=notification_db
+      - DB_HOST=db  # No Docker, o host é o nome do serviço do banco
+      - JWT_SECRET=${JWT_SECRET}
+      - APP_ENV=${APP_ENV:-development}
+
+  # Frontend Next.js
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    environment:
+      - API_URL=http://backend:8080
+      - NEXT_PUBLIC_API_URL=http://localhost:8080
+
+volumes:
+  postgres_data:
