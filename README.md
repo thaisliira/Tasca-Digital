@@ -244,4 +244,4 @@ O servidor emite mensagens com o formato `{ type, payload }`:
 
 ## Licença
 
-[MIT](LICENSE) — sinta-se à vontade para forçar de garfada.
+[MIT](LICENSE)
