@@ -26,6 +26,7 @@ Uma rede social interna em formato de tasca portuguesa.
 - [Desenvolvimento Local](#desenvolvimento-local)
 - [API](#api)
 - [Eventos em Tempo Real (WebSocket)](#eventos-em-tempo-real-websocket)
+- [Resolução de Problemas](#resolução-de-problemas)
 - [Notas](#notas)
 - [Licença](#licença)
 
@@ -38,7 +39,7 @@ Uma rede social interna em formato de tasca portuguesa.
 | **Backend** | Go 1.26 · [Gin](https://github.com/gin-gonic/gin) · [gorilla/websocket](https://github.com/gorilla/websocket) · JWT (cookie HttpOnly) · bcrypt |
 | **Frontend** | Next.js 16 (App Router) · React 19 · TypeScript (strict) · Tailwind CSS v4 · date-fns |
 | **Banco** | PostgreSQL 15 |
-| **Infra** | Docker · docker-compose |
+| **Infra** | Docker · Docker Compose v2 |
 
 ---
 
@@ -89,7 +90,27 @@ Uma rede social interna em formato de tasca portuguesa.
 
 ## Início Rápido (Docker)
 
-> **Pré-requisitos:** Docker e Docker Compose.
+> **Pré-requisitos:** Docker Engine + Docker Compose v2 (plugin).
+> O comando correto é `docker compose` (com espaço), não `docker-compose`.
+
+### Pré-requisitos por sistema operativo
+
+**macOS / Windows**
+Instala o [Docker Desktop](https://www.docker.com/products/docker-desktop/). O Compose v2 já vem incluído.
+
+**Linux**
+```bash
+# Instalar Docker Engine + plugin Compose
+sudo apt-get update
+sudo apt-get install -y docker.io docker-compose-v2
+
+# Adicionar o teu utilizador ao grupo docker (evita usar sudo)
+sudo usermod -aG docker $USER
+```
+
+Faz logout e volta a entrar (ou reinicia) para o grupo ficar activo em todas as sessões.
+
+---
 
 ```bash
 # 1. Clonar o repositório
@@ -100,7 +121,7 @@ cd Tasca-Digital
 cp .env.example .env
 
 # 3. Subir os três serviços (db, backend, frontend)
-docker-compose up --build
+docker compose up --build
 ```
 
 Acesse:
@@ -114,8 +135,8 @@ Acesse:
 Para parar:
 
 ```bash
-docker-compose down       # mantém os dados no volume
-docker-compose down -v    # apaga também o volume do Postgres
+docker compose down       # mantém os dados no volume
+docker compose down -v    # apaga também o volume do Postgres
 ```
 
 ---
@@ -128,7 +149,7 @@ docker-compose down -v    # apaga também o volume do Postgres
 cd backend
 
 # Sobe apenas o Postgres do compose, ou usa um Postgres local:
-# docker-compose up db
+# docker compose up db
 
 export DB_USER=user DB_PASSWORD=password DB_NAME=notification_db
 export DB_HOST=localhost DB_PORT=5433
@@ -230,6 +251,65 @@ O servidor emite mensagens com o formato `{ type, payload }`:
 | `reaction.updated`  | Brinde é adicionado / removido                        | Todos os fregueses ligados           |
 | `comment.created`   | Palpite novo numa posta                               | Todos os fregueses ligados           |
 | `dm.created`        | Mensagem direta enviada                               | Apenas remetente e destinatário      |
+
+---
+
+## Resolução de Problemas
+
+### `permission denied while trying to connect to the Docker API` (Linux)
+
+O teu utilizador não pertence ao grupo `docker`:
+
+```bash
+sudo usermod -aG docker $USER
+```
+
+Faz logout e volta a entrar (ou reinicia). `newgrp docker` aplica só na sessão actual — não resolve novos terminais.
+
+### `ModuleNotFoundError: No module named 'distutils'`
+
+Estás a usar o `docker-compose` legado (v1, Python). Usa o plugin v2:
+
+```bash
+docker compose up --build   # com espaço, não hífen
+```
+
+### `error getting credentials - exec: "docker-credential-desktop": executable file not found`
+
+O ficheiro `~/.docker/config.json` tem uma referência ao Docker Desktop que não existe em Linux. Remove a linha `credsStore`:
+
+```bash
+# Abre o ficheiro e remove a linha "credsStore": "desktop"
+nano ~/.docker/config.json
+```
+
+O ficheiro deve ficar assim:
+```json
+{
+  "auths": {},
+  "currentContext": "default"
+}
+```
+
+### `lookup db on 127.0.0.11:53: server misbehaving` (backend não arranca)
+
+Ficaram containers ou redes órfãs de uma sessão anterior. Faz uma limpeza completa e volta a subir:
+
+```bash
+docker compose down
+docker network prune -f
+docker compose up
+```
+
+### `The "JWT_SECRET" variable is not set`
+
+O ficheiro `.env` na raiz do projecto não tem o `JWT_SECRET` definido. Verifica:
+
+```bash
+grep JWT_SECRET .env
+```
+
+O formato correto é `JWT_SECRET=valor_sem_espaços` (sem espaços à volta do `=`).
 
 ---
 
