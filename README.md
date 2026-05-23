@@ -1,10 +1,11 @@
+Markdown
 <div align="center">
 
 # 💬 Tasca Digital
 
-**_Aqui manda-se a posta e bate-se o copo._**
+**_Aqui manda-se a posta e bate-se o copo. (Here we drop takes and raise glasses)._**
 
-Uma rede social interna em formato de tasca portuguesa.
+An internal social network themed as a traditional Portuguese "Tasca" (tavern).
 
 [![Go](https://img.shields.io/badge/Go-1.26-00ADD8?logo=go&logoColor=white)](https://go.dev/)
 [![Next.js](https://img.shields.io/badge/Next.js-16-000000?logo=next.js&logoColor=white)](https://nextjs.org/)
@@ -17,150 +18,150 @@ Uma rede social interna em formato de tasca portuguesa.
 
 ---
 
-## Ementa
+## 📜 Menu (Table of Contents)
 
 - [Stack](#stack)
-- [Funcionalidades](#funcionalidades)
-- [Estrutura do Projeto](#estrutura-do-projeto)
-- [Início Rápido (Docker)](#início-rápido-docker)
-- [Desenvolvimento Local](#desenvolvimento-local)
+- [Features](#features)
+- [Project Structure](#project-structure)
+- [Quick Start (Docker)](#quick-start-docker)
+- [Local Development](#local-development)
 - [API](#api)
-- [Eventos em Tempo Real (WebSocket)](#eventos-em-tempo-real-websocket)
-- [Resolução de Problemas](#resolução-de-problemas)
-- [Notas](#notas)
-- [Licença](#licença)
+- [Real-Time Events (WebSocket)](#real-time-events-websocket)
+- [Troubleshooting](#troubleshooting)
+- [Notes](#notes)
+- [License](#license)
 
 ---
 
-## Stack
+## 🛠️ Stack
 
-| Camada | Tecnologias |
+| Layer | Technologies |
 |---|---|
-| **Backend** | Go 1.26 · [Gin](https://github.com/gin-gonic/gin) · [gorilla/websocket](https://github.com/gorilla/websocket) · JWT (cookie HttpOnly) · bcrypt |
+| **Backend** | Go 1.26 · [Gin](https://github.com/gin-gonic/gin) · [gorilla/websocket](https://github.com/gorilla/websocket) · JWT (HttpOnly cookie) · bcrypt |
 | **Frontend** | Next.js 16 (App Router) · React 19 · TypeScript (strict) · Tailwind CSS v4 · date-fns |
-| **Banco** | PostgreSQL 15 |
+| **Database** | PostgreSQL 15 |
 | **Infra** | Docker · Docker Compose v2 |
 
 ---
 
-## Funcionalidades
+## ✨ Features
 
-- **Postas (Feed)** — criar, apagar (só o autor), reagir e comentar.
-- **Quadro de Avisos (Eventos)** — onde a malta se organiza com RSVP (vou / bazei) e pode comentar.
-- **O Reservado (DM)** — mensagens privadas em tempo real, com _soft-delete_ por lado (a conversa é apagada apenas pro user que decidiu apagar).
-- **Alertas de Balcão (Toasts)** — avisos instantâneos via WebSocket quando há reações ou comentários novos, sem acumular histórico.
-- **Ficha do Freguês (Perfil)** — nome, ofício, cor do avatar e troca de senha.
-- **Vitrine Pública** — pré-visualização desfocada dos posts mais recentes para quem ainda não entrou.
+- **Postas (Feed)** — Create, delete (author only), react, and comment on posts.
+- **Notice Board (Events)** — Organize meetups with RSVP (Going / Leaving) and event comments.
+- **The Backroom (DMs)** — Real-time private messaging with dual-sided soft-delete (conversations are deleted only for the user who cleared them).
+- **Counter Alerts (Toasts)** — Instant WebSocket notifications for new reactions or comments, without accumulating history.
+- **Patron's Tab (Profile)** — Update name, profession, avatar color, and password.
+- **Public Showcase** — Blurred preview of the latest posts for unauthenticated visitors.
 
 ---
 
-## Estrutura do Projeto
+## 🗂️ Project Structure
 
 ```text
 .
-├── backend/                 # API em Go
-│   ├── cmd/api/             # Ponto de entrada (main.go)
+├── backend/                 # Go API
+│   ├── cmd/api/             # Entry point (main.go)
 │   └── internal/
 │       ├── auth/            # Login, signup, JWT, middleware
-│       ├── chat/            # Mensagens diretas (DM)
-│       ├── database/        # Conexão e migrações
-│       ├── event/           # Eventos, respostas, comentários
-│       ├── id/              # Geração de IDs aleatórios
+│       ├── chat/            # Direct Messages (DM)
+│       ├── database/        # Connection and migrations
+│       ├── event/           # Events, RSVPs, comments
+│       ├── id/              # Random ID generation
 │       ├── middleware/      # CORS
-│       ├── post/            # Postas, comentários, reactions
-│       ├── routes/          # Registo de rotas
-│       ├── user/            # Perfil, hashing de senha
-│       └── ws/              # Hub de WebSocket
-├── frontend/                # App Next.js
+│       ├── post/            # Posts, comments, reactions
+│       ├── routes/          # Route registration
+│       ├── user/            # Profile, password hashing
+│       └── ws/              # WebSocket Hub
+├── frontend/                # Next.js App
 │   └── src/
-│       ├── app/             # Páginas (App Router)
-│       │   ├── components/  # Componentes partilhados
-│       │   ├── dashboard/   # Feed (O Balcão)
-│       │   ├── events/      # Quadro de avisos
-│       │   ├── messages/    # Reservado (DMs)
-│       │   ├── settings/    # Ficha do freguês
+│       ├── app/             # Pages (App Router)
+│       │   ├── components/  # Shared components
+│       │   ├── dashboard/   # Feed (The Counter)
+│       │   ├── events/      # Notice board
+│       │   ├── messages/    # The Backroom (DMs)
+│       │   ├── settings/    # Patron's Tab (Settings)
 │       │   ├── login/
 │       │   └── signup/
-│       └── lib/             # Clientes de API e auth
+│       └── lib/             # API clients and auth
 ├── docker-compose.yml
 └── .env.example
 ```
 
 ---
 
-## Início Rápido (Docker)
+## Quick Start (Docker)
 
-> **Pré-requisitos:** Docker Engine + Docker Compose v2 (plugin).
-> O comando correto é `docker compose` (com espaço), não `docker-compose`.
+> **Prerequisites:** Docker Engine + Docker Compose v2 (plugin).  
+> The correct command is `docker compose` (with a space), not `docker-compose`.
 
-### Pré-requisitos por sistema operativo
+### Prerequisites by operating system
 
-**macOS / Windows**
-Instala o [Docker Desktop](https://www.docker.com/products/docker-desktop/). O Compose v2 já vem incluído.
+**macOS / Windows**  
+Install [Docker Desktop](https://www.docker.com/products/docker-desktop/). Compose v2 is already included.
 
 **Linux**
 ```bash
-# Instalar Docker Engine + plugin Compose
+# Install Docker Engine + Compose plugin
 sudo apt-get update
 sudo apt-get install -y docker.io docker-compose-v2
 
-# Adicionar o teu utilizador ao grupo docker (evita usar sudo)
+# Add your user to the docker group (avoids using sudo)
 sudo usermod -aG docker $USER
 ```
 
-Faz logout e volta a entrar (ou reinicia) para o grupo ficar activo em todas as sessões.
+Log out and log back in (or reboot) so the group is applied to all sessions.
 
 ---
 
 ```bash
-# 1. Clonar o repositório
+# 1. Clone the repository
 git clone https://github.com/thaisliira/Tasca-Digital.git
 cd Tasca-Digital
 
-# 2. Copiar o exemplo de ambiente e ajustar o JWT_SECRET
+# 2. Copy the environment example and adjust JWT_SECRET
 cp .env.example .env
 
-# 3. Subir os três serviços (db, backend, frontend)
+# 3. Start the three services (db, backend, frontend)
 docker compose up --build
 ```
 
-Acesse:
+Access:
 
-| Serviço   | URL                          |
+| Service   | URL                          |
 |-----------|------------------------------|
 | Frontend  | <http://localhost:3000>      |
 | Backend   | <http://localhost:8080>      |
 | Postgres  | `localhost:5433` (host) → `5432` (container) |
 
-Para parar:
+To stop:
 
 ```bash
-docker compose down       # mantém os dados no volume
-docker compose down -v    # apaga também o volume do Postgres
+docker compose down       # keeps database data in the volume
+docker compose down -v    # also removes the Postgres volume
 ```
 
 ---
 
-## Desenvolvimento Local
+## Local Development
 
 ### Backend
 
 ```bash
 cd backend
 
-# Sobe apenas o Postgres do compose, ou usa um Postgres local:
+# Start only the Postgres service from compose, or use a local Postgres:
 # docker compose up db
 
 export DB_USER=user DB_PASSWORD=password DB_NAME=notification_db
 export DB_HOST=localhost DB_PORT=5433
-export JWT_SECRET=qualquer_coisa_grande
+export JWT_SECRET=any_large_secret
 export APP_ENV=development
 
 go mod download
 go run ./cmd/api
 ```
 
-API em <http://localhost:8080>.
+API available at <http://localhost:8080>.
 
 ### Frontend
 
@@ -170,120 +171,55 @@ npm install
 npm run dev
 ```
 
-App em <http://localhost:3000>. O cliente aponta para `http://localhost:8080` quando corre no browser.
+App available at <http://localhost:3000>. The client points to `http://localhost:8080` when running in the browser.
 
 ---
 
-## API
+## Real-Time Events (WebSocket)
 
-Todas as rotas autenticadas exigem o cookie `auth_token` (JWT em HttpOnly).
+The server emits messages in the format `{ type, payload }`:
 
-### Públicas
-
-| Método | Rota              | Descrição                       |
-|--------|-------------------|---------------------------------|
-| `POST` | `/signup`         | Criar conta (devolve cookie)    |
-| `POST` | `/login`          | Entrar (devolve cookie)         |
-| `POST` | `/logout`         | Sair (limpa cookie)             |
-| `GET`  | `/posts/public`   | Vitrine: 2 postas mais recentes |
-
-<details>
-<summary><strong>Autenticadas</strong> (clica para expandir)</summary>
-
-#### Utilizador
-
-| Método | Rota     | Descrição                              |
-|--------|----------|----------------------------------------|
-| `GET`  | `/me`    | Dados do utilizador logado             |
-| `PUT`  | `/me`    | Atualizar nome / ofício / cor / senha  |
-| `GET`  | `/users` | Listar fregueses (excepto o próprio)   |
-
-#### Postas e palpites
-
-| Método   | Rota                                         | Descrição                          |
-|----------|----------------------------------------------|------------------------------------|
-| `GET`    | `/posts`                                     | Listar postas                      |
-| `POST`   | `/posts`                                     | Criar posta                        |
-| `DELETE` | `/posts/:id`                                 | Apagar posta (só o autor)          |
-| `POST`   | `/posts/:id/reactions`                       | Brindar / desbrindar               |
-| `GET`    | `/posts/:id/comments`                        | Listar palpites                    |
-| `POST`   | `/posts/:id/comments`                        | Criar palpite                      |
-| `DELETE` | `/posts/:id/comments/:commentId`             | Apagar palpite (até 15 min depois) |
-
-#### Eventos
-
-| Método   | Rota                       | Descrição                       |
-|----------|----------------------------|---------------------------------|
-| `GET`    | `/events`                  | Listar eventos                  |
-| `POST`   | `/events`                  | Criar evento                    |
-| `PUT`    | `/events/:id`              | Atualizar evento (só criador)   |
-| `DELETE` | `/events/:id`              | Apagar evento (só criador)      |
-| `POST`   | `/events/:id/responses`    | Responder vou / não vou         |
-| `GET`    | `/events/:id/comments`     | Listar comentários              |
-| `POST`   | `/events/:id/comments`     | Criar comentário                |
-
-#### Mensagens diretas
-
-| Método   | Rota                       | Descrição                                  |
-|----------|----------------------------|--------------------------------------------|
-| `GET`    | `/messages/:friendID`      | Buscar conversa                            |
-| `POST`   | `/messages`                | Enviar DM                                  |
-| `DELETE` | `/messages/:friendID`      | Esquecer conversa (só do teu lado)         |
-
-#### WebSocket
-
-| Método | Rota   | Descrição                |
-|--------|--------|--------------------------|
-| `GET`  | `/ws`  | Upgrade para WebSocket   |
-
-</details>
-
----
-
-## Eventos em Tempo Real (WebSocket)
-
-O servidor emite mensagens com o formato `{ type, payload }`:
-
-| Evento              | Quando dispara                                        | Alcance                              |
+| Event               | Trigger                                               | Scope                                |
 |---------------------|-------------------------------------------------------|--------------------------------------|
-| `post.created`      | Posta nova é publicada                                | Todos os fregueses ligados           |
-| `post.deleted`      | Posta é removida pelo autor                           | Todos os fregueses ligados           |
-| `reaction.updated`  | Brinde é adicionado / removido                        | Todos os fregueses ligados           |
-| `comment.created`   | Palpite novo numa posta                               | Todos os fregueses ligados           |
-| `dm.created`        | Mensagem direta enviada                               | Apenas remetente e destinatário      |
+| `post.created`      | A new post is published                               | All connected patrons                |
+| `post.deleted`      | A post is removed by the author                       | All connected patrons                |
+| `reaction.updated`  | A reaction is added / removed                         | All connected patrons                |
+| `comment.created`   | A new comment is added to a post                      | All connected patrons                |
+| `dm.created`        | A direct message is sent                              | Sender and recipient only            |
 
 ---
 
-## Resolução de Problemas
+## Troubleshooting
 
 ### `permission denied while trying to connect to the Docker API` (Linux)
 
-O teu utilizador não pertence ao grupo `docker`:
+Your user is not part of the `docker` group:
 
 ```bash
 sudo usermod -aG docker $USER
 ```
 
-Faz logout e volta a entrar (ou reinicia). `newgrp docker` aplica só na sessão actual — não resolve novos terminais.
+Log out and log back in (or reboot). `newgrp docker` only applies to the current session — it does not fix new terminals.
 
 ### `ModuleNotFoundError: No module named 'distutils'`
 
-Estás a usar o `docker-compose` legado (v1, Python). Usa o plugin v2:
+You are using legacy `docker-compose` (v1, Python). Use the v2 plugin instead:
 
 ```bash
-docker compose up --build   # com espaço, não hífen
+docker compose up --build   # with a space, not a hyphen
 ```
 
 ### `error getting credentials - exec: "docker-credential-desktop": executable file not found`
 
-O ficheiro `~/.docker/config.json` tem uma referência ao Docker Desktop que não existe em Linux. Remove a linha `credsStore`:
+Your `~/.docker/config.json` file contains a Docker Desktop reference that does not exist on Linux. Remove the `credsStore` line:
 
 ```bash
-# Abre o ficheiro e remove a linha "credsStore": "desktop"
+# Open the file and remove the line "credsStore": "desktop"
 nano ~/.docker/config.json
 ```
 
-O ficheiro deve ficar assim:
+The file should look like this:
+
 ```json
 {
   "auths": {},
@@ -291,9 +227,9 @@ O ficheiro deve ficar assim:
 }
 ```
 
-### `lookup db on 127.0.0.11:53: server misbehaving` (backend não arranca)
+### `lookup db on 127.0.0.11:53: server misbehaving` (backend does not start)
 
-Ficaram containers ou redes órfãs de uma sessão anterior. Faz uma limpeza completa e volta a subir:
+There are orphaned containers or networks from a previous session. Perform a full cleanup and start again:
 
 ```bash
 docker compose down
@@ -303,25 +239,29 @@ docker compose up
 
 ### `The "JWT_SECRET" variable is not set`
 
-O ficheiro `.env` na raiz do projecto não tem o `JWT_SECRET` definido. Verifica:
+The `.env` file in the project root does not have `JWT_SECRET` defined. Check with:
 
 ```bash
 grep JWT_SECRET .env
 ```
 
-O formato correto é `JWT_SECRET=valor_sem_espaços` (sem espaços à volta do `=`).
+The correct format is:
+
+```env
+JWT_SECRET=value_without_spaces
+```
+
+(no spaces around `=`).
 
 ---
 
-## Notas
+## Notes
 
-- O backend executa `DROP TABLE` em algumas tabelas no arranque para garantir o esquema certo. **Não use em produção sem trocar essa lógica por migrações reais** (Goose, Atlas, golang-migrate, etc.).
-- As credenciais do Postgres no `docker-compose.yml` são valores de desenvolvimento. Em produção, mova-as para variáveis de ambiente / secrets.
-- _Soft-delete_ das DMs é por lado: ao apagar, só desaparecem do teu histórico — a outra pessoa continua a ver até também apagar.
-- O cookie JWT é `HttpOnly` e usa `Secure` apenas quando `APP_ENV=production`.
+- The backend runs `DROP TABLE` on some tables during startup to guarantee the expected schema. **Do not use this in production without replacing it with proper migrations** (Goose, Atlas, golang-migrate, etc.).
+- The Postgres credentials inside `docker-compose.yml` are development values. In production, move them to environment variables or secrets.
+- DM *soft-delete* is per-user: when you delete a conversation, it only disappears from your history — the other user still sees it until they also delete it.
+- The JWT cookie is `HttpOnly` and only uses `Secure` when `APP_ENV=production`.
 
----
-
-## Licença
+## License
 
 [MIT](LICENSE)
