@@ -1,4 +1,3 @@
-Markdown
 <div align="center">
 
 # 💬 Tasca Digital
@@ -18,14 +17,13 @@ An internal social network themed as a traditional Portuguese "Tasca" (tavern).
 
 ---
 
-## 📜 Menu (Table of Contents)
+## Menu (Table of Contents)
 
 - [Stack](#stack)
 - [Features](#features)
 - [Project Structure](#project-structure)
 - [Quick Start (Docker)](#quick-start-docker)
 - [Local Development](#local-development)
-- [API](#api)
 - [Real-Time Events (WebSocket)](#real-time-events-websocket)
 - [Troubleshooting](#troubleshooting)
 - [Notes](#notes)
@@ -33,7 +31,7 @@ An internal social network themed as a traditional Portuguese "Tasca" (tavern).
 
 ---
 
-## 🛠️ Stack
+## Stack
 
 | Layer | Technologies |
 |---|---|
@@ -44,7 +42,7 @@ An internal social network themed as a traditional Portuguese "Tasca" (tavern).
 
 ---
 
-## ✨ Features
+## Features
 
 - **Postas (Feed)** — Create, delete (author only), react, and comment on posts.
 - **Notice Board (Events)** — Organize meetups with RSVP (Going / Leaving) and event comments.
@@ -55,7 +53,7 @@ An internal social network themed as a traditional Portuguese "Tasca" (tavern).
 
 ---
 
-## 🗂️ Project Structure
+## Project Structure
 
 ```text
 .
