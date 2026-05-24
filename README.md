@@ -5,7 +5,7 @@
 
 # 💬 Tasca Digital
 
-**_Aqui manda-se a posta e bate-se o copo. (Here we drop takes and raise glasses)._**
+**_Aqui manda-se a posta e bate-se o copo._**
 
 An internal social network themed as a traditional Portuguese "Tasca" (tavern).
 
