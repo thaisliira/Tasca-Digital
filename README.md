@@ -1,4 +1,7 @@
 <div align="center">
+  <img src="draco_code.gif" alt="Draco Tech Banner" width="90%" />
+</div>
+<div align="center">
 
 # 💬 Tasca Digital
 
