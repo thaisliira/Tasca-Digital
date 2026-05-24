@@ -266,3 +266,18 @@ JWT_SECRET=value_without_spaces
 ## License
 
 [MIT](LICENSE)
+
+---
+
+## Author
+
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/thaisliira">
+        <img src="https://avatars.githubusercontent.com/thaisliira?size=100" width="80px;" alt="Thais Lira profile"/><br>
+        <sub><b>Thais Lira</b></sub>
+      </a>
+    </td>
+  </tr>
+</table>
